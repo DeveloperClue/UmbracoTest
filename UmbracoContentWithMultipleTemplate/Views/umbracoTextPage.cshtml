@@ -1,0 +1,48 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "umbracoHomePage.cshtml";
+
+
+    // Model.Content is the current page that we're on
+    // AncestorsOrSelf is all of the ancestors this page has in the tree
+    // (1) means: go up to level 1 and stop looking for more ancestors when you get there
+    // First() gets the first ancestor found (the home page, on level 1)
+    var homePage = CurrentPage.AncestorsOrSelf(1).First();
+
+    // Find all pages with document type alias umbNewsOverview
+    // We do that using the plural, umbNewsOverviews (note the extra "s" in the end)
+    // Then take the first one, as we know there will only be on news overview page
+    var newsOverview = homePage.umbracoSliders.First();
+
+    // Similar to above: find all pages with document type umbNewsItem under the news overview page
+    // Then order them, first by publishDate (a property the editor can explicitly set on the news item)
+    // and then by createDate, which is set by Umbraco automatically when a page gets created.
+    // Finally, take the first 5 items to show in the news overview
+    var newsItems = newsOverview.umbracoSlides.OrderBy("publishDate desc, createDate desc").Take(5);
+
+    newsItems = homePage.Children.ToList();
+
+}
+<div id="page">
+    <div id="content">
+        <div class="box">
+            <h2>@Umbraco.Field("contentHeading", recursive: true)</h2>
+            <p>
+                @Umbraco.Field("pageContent", recursive: true)
+            </p>
+        </div>
+    </div>
+    <br class="clearfix" />
+</div>
+
+
+<h2 class="major"><span>Recent Posts</span></h2>
+<!-- Archives -->
+<ul class="style2">
+    @foreach (var newsItem in newsItems)
+    {
+        <li>
+            Hi
+        </li>
+    }
+</ul>

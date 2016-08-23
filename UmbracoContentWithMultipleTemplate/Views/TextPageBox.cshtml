@@ -1,0 +1,54 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+	Layout = "umbracoHomePage.cshtml";
+	var selection = CurrentPage.Site().Children("umbracoTextPage").Where("Visible");
+}
+
+<div id="page">
+    <div id="content">
+        <div class="box">
+            <h2>@Umbraco.Field("contentHeading", recursive: true)</h2>
+            <p>
+                @Umbraco.Field("pageContent", recursive: true)
+            </p>
+        </div>
+
+
+        <h3>Layout 1 - Liquid</h3>
+        @foreach(var item in selection){
+        <div class="box">
+            <h4>@item.contentHeading</h4>
+            <p>
+                @item.pageContent
+            </p>
+        </div>
+        }
+
+        <div class="box" id="content-box1">
+            <h3>Layout 2 - Box</h3>
+            <ul class="section-list">
+                @foreach(var item in selection){
+                <li class="first">
+                    <span>@item.Name</span>
+                    <img class="pic alignleft" src="@Umbraco.TypedMedia(@item.contentImage).Url" width="70" height="70" alt="" />
+                    <span>@Umbraco.Truncate(@item.pageContent, 50, true)</span>
+                </li>
+                }
+            </ul>
+        </div>
+
+        <div class="box" id="content-box2">
+            <h3>Layout 3 - Link</h3>            
+            <ul class="list">
+                @foreach(var item in selection){
+                <li class="first">
+                    <a href="@Umbraco.NiceUrl(@item.Id)">
+                        @item.Name
+                    </a>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <br class="clearfix" />
+</div>

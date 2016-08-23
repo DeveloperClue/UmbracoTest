@@ -1,0 +1,55 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = null;
+    var selection = CurrentPage.Site().Children.Where("Visible");
+    var homePage = CurrentPage.AncestorsOrSelf(1).First();
+
+    var selection1 = CurrentPage.Site().Children("umbracoSlide").Where("Visible");
+    var rootNodes = Umbraco.TypedContentAtRoot();
+    var slider = rootNodes.Where("Id==" + 1148).FirstOrDefault();//.Children.Where("Visible");
+}
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>@Umbraco.Field("websiteTitle", altText: "Umbraco App", recursive: true)</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header" style="background-image:url(@Umbraco.Media(homePage.headerImage).Url);">
+            <div id="logo">
+                <h1><a href="#">@Umbraco.Field("logoText", altText: "Umbraco App", recursive: true)</a></h1>
+            </div>
+        </div>
+        <div id="menu">
+            <ul>
+                @foreach (var item in selection)
+                {
+                    <li>
+                        <a href="@item.Url">@item.Name</a>
+                    </li>
+                }
+            </ul>
+            <br class="clearfix" />
+        </div>
+        <ul>
+            @foreach (var item in selection1)
+            {
+                <li>
+                    <a href="@item.Url">@item.Name</a>
+                </li>
+            }
+        </ul>
+        @{ Html.RenderPartial("_Slider"); }
+        @RenderBody()
+    </div>
+    <div id="footer">
+        &copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.
+    </div>
+</body>
+</html>

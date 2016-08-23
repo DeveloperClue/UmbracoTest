@@ -1,0 +1,13 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "umbracoLayout.cshtml";
+    var homePage = CurrentPage.AncestorsOrSelf(1).First();
+}
+@if (homePage.hideBanner == false)
+{
+    <div id="splash">
+        <img class="pic" src="@Umbraco.Media(homePage.bannerImage).Url" width="870" height="230"
+             alt="@Umbraco.Media(homePage.bannerImage).Name" />
+    </div>
+}
+@RenderBody()
